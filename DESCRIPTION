@@ -1,9 +1,9 @@
 Package: Smisc
 Type: Package
-Title: What the package does (short line)
+Title: Miscellaneous useful functions
 Version: 1.0
 Date: 2015-05-26
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Sean Murphy
+Maintainer: Sean Murphy <seanchrismurphy@gmail.com>
+Description: Right now, this is just a collection of useful functions for me. It may be more at a later date.
+License: GPL-2
