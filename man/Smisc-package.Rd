@@ -16,7 +16,18 @@ Version: \tab 1.0\cr
 Date: \tab 2015-05-26\cr
 License: \tab GPL-2 \cr
 }
-An overview of how to use the package, including the most important functions
+Important functions: 
+
+Datamerge() which merges two datasets with some different columns by creating empty columns so that they'll match (note this may be redundant with plyr::join)
+
+corstars() which creates pretty correlation tables
+
+spss.load() is a wrapper around hadley's read_sav that saves a few lines
+
+getdesc() gets the descriptions from each column of an spss file that has been loaded with spss.load or read_sav
+
+qual.load() loads up .csv files downloaded from qualtrics and deals with the crappy qualtrics formatting, putting original question names in a description attribute that can be accessed with description()
+
 }
 \author{
 Sean Murphy

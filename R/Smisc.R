@@ -12,3 +12,69 @@ Datamerge <- function(data1, data2) {
   final <- rbind(end1, end2)
   final
 }
+
+# All credit to the original source of this, which I think is here: https://stat.ethz.ch/pipermail/r-help/2008-March/156583.html
+# I have just adapted it slightly and load it here for my convenience.
+corstars <- function(x){ 
+  require(Hmisc) 
+  x <- as.matrix(x) 
+  R <- rcorr(x)$r 
+  p <- rcorr(x)$P 
+  
+  ## define notions for significance levels; spacing is important.
+  mystars <- ifelse(p < .001, "***", ifelse(p < .01, "** ", ifelse(p < .05, "* ", " ")))
+  
+  ## trunctuate the matrix that holds the correlations to two decimal
+  R <- format(round(cbind(rep(-1.11, ncol(x)), R), 2))[,-1] 
+  
+  ## build a new matrix that includes the correlations with their apropriate stars 
+  Rnew <- matrix(paste(R, mystars, sep=""), ncol=ncol(x)) 
+  diag(Rnew) <- paste(diag(R), " ", sep="") 
+  rownames(Rnew) <- colnames(x) 
+  colnames(Rnew) <- paste(colnames(x), "", sep="") 
+  
+  ## remove upper triangle
+  Rnew <- as.matrix(Rnew)
+  Rnew[upper.tri(Rnew, diag = TRUE)] <- ""
+  diag(Rnew) <- 1
+  Rnew <- as.data.frame(Rnew) 
+  
+  ## remove last column and return the matrix (which is now a data frame)
+  Rnew <- cbind(Rnew[1:length(Rnew)])
+  colnames(Rnew) <- 1:ncol(Rnew)
+  return(Rnew) 
+}
+
+# Just a function to save a line of code when reading in spss files using haven
+spss.load <- function(x) {
+  require(haven)
+  data <- read_sav(x)
+  data <- as.data.frame(data, stringsAsFactors = FALSE)
+  data
+}
+
+# Function to quickly pull the descriptions from an spss object loaded through haven
+getdesc <- function(x) {
+  sapply(x, function(y) attributes(y)$label)
+}
+
+# Qualtrics doubles up on column names by having the question names and descriptions each with their own column, which
+# causes everything to be loaded as a factor/character. This function loads the first line, then everything after the
+# second line, and puts them together so everything is unaltered.
+
+# It also adds the description attribute to the data to keep those Qualtrics questions in there, and can be accessed 
+# with the description function below in the same way as colnames, though the attributes aren't per-column like in 
+# haven loadings. 
+qual.load <- function(x) {
+  data <- read.csv(x, stringsAsFactors = FALSE, skip = 2)
+  names <- read.csv(x, stringsAsFactors = FALSE, nrow = 2)
+  descriptions <- names[1,]
+  colnames(data) <- colnames(names)
+  attributes(data)$description <- as.character(descriptions[1,])
+  rm(names, descriptions)
+  data
+}
+
+description <- function(x) { 
+  attributes(x)$description
+}
