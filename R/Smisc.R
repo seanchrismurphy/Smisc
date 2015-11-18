@@ -65,8 +65,11 @@ getdesc <- function(x) {
 # It also adds the description attribute to the data to keep those Qualtrics questions in there, and can be accessed 
 # with the description function below in the same way as colnames, though the attributes aren't per-column like in 
 # haven loadings. 
+
+### Just realised I had missed the header = FALSE argument here which meant I was missing the first row of every dataset I've used
+### this function on. Time to go back over stuff!
 qual.load <- function(x) {
-  data <- read.csv(x, stringsAsFactors = FALSE, skip = 2)
+  data <- read.csv(x, stringsAsFactors = FALSE, skip = 2, header = FALSE)
   names <- read.csv(x, stringsAsFactors = FALSE, nrow = 2)
   descriptions <- names[1,]
   colnames(data) <- colnames(names)
