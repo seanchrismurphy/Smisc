@@ -79,5 +79,5 @@ qual.load <- function(x) {
 }
 
 description <- function(x) { 
-  attributes(x)$description
+  return(attributes(x)$description)
 }
