@@ -71,9 +71,8 @@ getdesc <- function(x) {
 qual.load <- function(x) {
   data <- read.csv(x, stringsAsFactors = FALSE, skip = 2, header = FALSE)
   names <- read.csv(x, stringsAsFactors = FALSE, nrow = 2)
-  descriptions <- names[1,]
   colnames(data) <- colnames(names)
-  attributes(data)$description <- as.character(descriptions[1,])
+  attributes(data)$description <- as.character(names[1,])
   rm(names, descriptions)
   data
 }
