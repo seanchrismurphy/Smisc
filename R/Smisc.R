@@ -73,7 +73,7 @@ qual.load <- function(x) {
   names <- read.csv(x, stringsAsFactors = FALSE, nrow = 2)
   colnames(data) <- colnames(names)
   attributes(data)$description <- as.character(names[1,])
-  rm(names, descriptions)
+  rm(names)
   data
 }
 
