@@ -68,14 +68,26 @@ getdesc <- function(x) {
 
 ### Just realised I had missed the header = FALSE argument here which meant I was missing the first row of every dataset I've used
 ### this function on. Time to go back over stuff!
-qual.load <- function(x) {
+qual.load <- function(x, label = TRUE, description = FALSE) {
+  require(Hmisc)
   data <- read.csv(x, stringsAsFactors = FALSE, skip = 2, header = FALSE)
   names <- read.csv(x, stringsAsFactors = FALSE, nrow = 2)
   colnames(data) <- colnames(names)
-  attributes(data)$description <- as.character(names[1,])
+  names <- as.character(names[1,]); names(names) <- 1:length(names)
+  if (label == TRUE) {
+    label(data) <- lapply(names, function(x) label(data[,names(x)]) = x)
+  }
+  if (description == TRUE) {
+    attributes(data)$description <- as.character(names)
+  }
   rm(names)
   data
 }
+
+# So labels can only be assigned a) if you call a column by it's number not name or b) to the whole dataframe, but it has to be a list of character vectors, 
+# not a character vector of labels (which seems stupid, but whatever). So the code I've inserted works. It's going to mean everything is of class 'labelled'
+# though, which can cause problems. 
+
 
 description <- function(x) { 
   return(attributes(x)$description)
