@@ -1,5 +1,9 @@
 # Datamerge: A function I wrote to merge together two data frames where one or both have variables the other doesn't
 # Note that this function assumes variables of the same name in different dataframes are the same variable
+
+# Note that this is now (and possible was when I wrote it, though it has been a while) implemented in plyr
+# by rbind.fill. I will maintain it here so that legacy code doesn't break, but will try to remember to use
+# rbind.fill in future.
 Datamerge <- function(data1, data2) {
   add1 <- setdiff(colnames(data2), colnames(data1))
   add2 <- setdiff(colnames(data1), colnames(data2))
@@ -45,7 +49,8 @@ corstars <- function(x){
   return(Rnew) 
 }
 
-# Just a function to save a line of code when reading in spss files using haven
+# Just a function to save a line of code when reading in spss files using haven. Though I never remember
+# to use it.
 spss.load <- function(x) {
   require(haven)
   data <- read_sav(x)
@@ -62,13 +67,12 @@ getdesc <- function(x) {
 # causes everything to be loaded as a factor/character. This function loads the first line, then everything after the
 # second line, and puts them together so everything is unaltered.
 
-# It also adds the description attribute to the data to keep those Qualtrics questions in there, and can be accessed 
-# with the description function below in the same way as colnames, though the attributes aren't per-column like in 
-# haven loadings. 
+# I believe that with the label = TRUE argument, this applies labels from Qualtrics to the data in exactly
+# the same way as haven applies descriptions from spss, meaning that they are available through getdesc. 
+# this seems to be the case in my experience, as it seemed to work in my dating profile examples. Thus,
+# the description argument (and the description function) are likely deprecated.
 
-### Just realised I had missed the header = FALSE argument here which meant I was missing the first row of every dataset I've used
-### this function on. Time to go back over stuff!
-qual.load <- function(x, label = TRUE, description = FALSE) {
+qual.load <- function(x, label = TRUE) {
   require(Hmisc)
   data <- read.csv(x, stringsAsFactors = FALSE, skip = 2, header = FALSE)
   names <- read.csv(x, stringsAsFactors = FALSE, nrow = 2)
@@ -77,18 +81,6 @@ qual.load <- function(x, label = TRUE, description = FALSE) {
   if (label == TRUE) {
     label(data) <- lapply(names, function(x) label(data[,names(x)]) = x)
   }
-  if (description == TRUE) {
-    attributes(data)$description <- as.character(names)
-  }
   rm(names)
   data
-}
-
-# So labels can only be assigned a) if you call a column by it's number not name or b) to the whole dataframe, but it has to be a list of character vectors, 
-# not a character vector of labels (which seems stupid, but whatever). So the code I've inserted works. It's going to mean everything is of class 'labelled'
-# though, which can cause problems. 
-
-
-description <- function(x) { 
-  return(attributes(x)$description)
 }
