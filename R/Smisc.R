@@ -97,3 +97,32 @@ nice_fa <- function(data, nfactors, rotate = 'varimax', loadings.only = TRUE, cu
   }
   
 }
+
+
+
+# Leveraging the code that tells the alpha function in psych when things are likely reverse coded, to 
+# automagically reverse code entire scales. This returns the entire dataset so needs to be used assingment
+# wise. 
+auto.reverse.code <- function(data, max = NULL, min = NULL) {
+  if (is.null(max)) {
+    max <- max(data, na.rm = TRUE)
+  }
+  
+  if (is.null(min)) {
+    max <- min(data, na.rm = TRUE)
+  }
+  
+  require(psych)
+  p1 <- principal(data)
+  if (any(p1$loadings < 0)) {
+    reversed <- p1$loadings < 0
+    # This uses the empirical max of the entire scale, whereas I think the reverse.code function in psych
+    # uses only the item by default, though there you can specify your max and min
+    data[, reversed] <- (max + min - data[, reversed])
+    colnames(data)[reversed] <- paste0(colnames(data)[reversed], '-')
+    print(paste('items ', paste(colnames(data)[reversed], collapse = ', '), ' were reverse coded.'))
+  }
+  data
+}
+
+auto.reverse.code(pain[, grep('IRI', colnames(pain))])
