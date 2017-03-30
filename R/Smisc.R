@@ -84,3 +84,16 @@ qual.load <- function(x, label = TRUE) {
   rm(names)
   data
 }
+
+
+# Just a method to print the output from FA nicely without having to specify 20 settings, because it's a garbled
+# mess of a function that spits out way too much output and is way too difficult to interpret.
+nice_fa <- function(data, nfactors, rotate = 'varimax', loadings.only = TRUE, cut = .3, digits = 2, sort = TRUE, ...) {
+  args <- list(...)
+  if (loadings.only) {
+    print(loadings(fa(data, nfactors = nfactors, rotate = rotate, args)), cut = cut, digits = digits, sort = sort)
+  } else {
+    print((fa(data, nfactors = nfactors, rotate = rotate, args)), cut = cut, digits = digits, sort = sort)
+  }
+  
+}
