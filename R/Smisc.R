@@ -125,4 +125,9 @@ auto.reverse.code <- function(data, max = NULL, min = NULL) {
   data
 }
 
-auto.reverse.code(pain[, grep('IRI', colnames(pain))])
+# I very often have to create scales from a grep of scale names. So just making a shortcut to save 
+# some time. 
+create_scale <- function(data, scale) {
+  data[[scale]] <- rowMeans(data[, grep(scale, colnames(data))])
+  data
+}
