@@ -201,3 +201,18 @@ fit_many_regressions <- function(dependent, predictors, data) {
   fitted <- sapply(models, function(x) do.call('lm', list(x, data = data)))
   fitted
 }
+
+# Add a report-sig function to make things a little easier to update in knitr. Basically, if one of my 
+# tests (regression or correlation, but it should work on anything that spits out a p value) is significant,
+# it adds nothing. But if it's not significant, it adds 'not '. Hopefully I can use this flexibly so that
+# my sentences will update correctly, at least at the rough level. 
+report_sig <- function(text) {
+  require(stringr)
+  pval <- as.numeric(str_match(text, 'p.*(\\.[0-9]*)')[,2])
+  if (pval < .05) {
+    out = ''
+  } else {
+    out = 'not '
+  }
+  out
+}
