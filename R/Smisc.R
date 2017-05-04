@@ -159,7 +159,7 @@ regression_apa <- function(model, variable) {
   beta <- tab['estimate']
   p <- tab['p.value']
   t <- tab['statistic']
-  df <- glance(mod)['df.residual']
+  df <- glance(model)['df.residual']
   
   p <- round(p, 3)
   p <- max(p, .001)
