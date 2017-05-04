@@ -131,3 +131,14 @@ create_scale <- function(data, scale) {
   data[[scale]] <- rowMeans(data[, grep(scale, colnames(data))], na.rm = TRUE)
   data
 }
+
+# A function to check and then load packages (though only on CRAN, not from github)
+
+safe_load <- function(packages) {
+  
+  if (length(setdiff(packages, installed.packages()[,1])) > 0) {
+    install.packages(setdiff(packages, installed.packages()))
+  }
+  
+  sapply(packages, require, character.only = TRUE)
+}
