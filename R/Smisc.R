@@ -169,12 +169,12 @@ regression_apa <- function(model, variable) {
   
   if (p == .001) {
     text = paste0('$\\beta$ = ', gsub('0\\.', '\\.', sprintf("%.2f", round(beta, 2))), 
-                  ', *t*(', df, ') = ', gsub('0\\.', '\\.',(sprintf("%.2f", round(t, 2))), 
+                  ', *t*(', df, ') = ', gsub('0\\.', '\\.',(sprintf("%.2f", round(t, 2)))), 
                                              ' *p* < .001')
   } else {
     text = paste0('$\\beta$ = ', gsub('0\\.', '\\.', sprintf("%.2f", round(beta, 2))), 
-                  ', *t*(', df, ') = ', gsub('0\\.', '\\.',(sprintf("%.2f", round(t, 2))), 
-                                             ' *p* = ', gsub('0\\.', '\\.', sprintf("%.3f", p)))
+                  ', *t*(', df, ') = ', gsub('0\\.', '\\.',(sprintf("%.2f", round(t, 2)))), 
+                                             ' *p* = ', gsub('0\\.', '\\.', sprintf("%.3f", p))
   }
   
   text
