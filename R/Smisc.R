@@ -182,6 +182,6 @@ regression_apa <- function(model, variable) {
 
 alpha_apa <- function(dataframe) {
   require(psych)
-  text = paste0('$\\alpha$ = ' gsub('0\\.', '\\.',(sprintf("%.2f", psych::alpha(dataframe)$total$raw_alpha, 2))))
+  text = paste0('$\\alpha$ = ', gsub('0\\.', '\\.',(sprintf("%.2f", psych::alpha(dataframe)$total$raw_alpha, 2))))
   text
 }
