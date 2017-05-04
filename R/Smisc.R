@@ -168,9 +168,13 @@ regression_apa <- function(model, variable) {
   p <- max(p, .001)
   
   if (p == .001) {
-    text = paste0('$\\beta$ = ', sprintf("%.2f", round(beta, 2)), ', *t*(', df, ') = ', sprintf("%.2f", round(t, 2)), ' *p* < .001')
+    text = paste0('$\\beta$ = ', gsub('0\\.', '\\.', sprintf("%.2f", round(beta, 2))), 
+                  ', *t*(', df, ') = ', gsub('0\\.', '\\.',(sprintf("%.2f", round(t, 2))), 
+                                             ' *p* < .001')
   } else {
-    text = paste0('$\\beta$ = ', sprintf("%.2f", round(beta, 2)), ', *t*(', df, ') = ', sprintf("%.2f", round(t, 2)), ' *p* = ', sprintf("%.3f", p))
+    text = paste0('$\\beta$ = ', gsub('0\\.', '\\.', sprintf("%.2f", round(beta, 2))), 
+                  ', *t*(', df, ') = ', gsub('0\\.', '\\.',(sprintf("%.2f", round(t, 2))), 
+                                             ' *p* = ', gsub('0\\.', '\\.', sprintf("%.3f", p)))
   }
   
   text
