@@ -180,8 +180,20 @@ regression_apa <- function(model, variable) {
   text
 }
 
-alpha_apa <- function(dataframe) {
-  require(psych)
-  text = paste0('$\\alpha$ = ', gsub('0\\.', '\\.',(sprintf("%.2f", psych::alpha(dataframe)$total$raw_alpha, 2))))
-  text
+
+fit_many_regressions <- function(dependent, predictors, data) {
+  models <- vector(mode = 'list', length = length(dependent))
+  names(models) <- dependent
+  
+  # So basically what I'm doing here is just fitting all the regressions that I'm going to need to report, using dependent as a list of DVs and predictors 
+  # as a list of IVs. 
+  for (i in 1:length(dependent)) {
+    # Getting a bit clever with vectorized paste here, perhaps at risk of making this hard to read/change later. Just pasting scale around both
+    # predictors before collapsing them. 
+    models[[i]] <- as.formula(paste0('scale(', dependent[i], ') ~ ', paste(paste0('scale(', predictors, ')'), collapse = ' + ')))
+  }
+  
+  fitted <- sapply(models, function(x) do.call('lm', list(x, data = data)))
+  fitted
 }
+
