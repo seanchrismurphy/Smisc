@@ -155,7 +155,10 @@ regression_apa <- function(model, variable) {
   # should have any)
   variable <- deparse(substitute(variable))
   tab <- tidy(model, conf.int = TRUE)
-  tab <- tab[tab$term %in% variable,]
+  # Changed this so it finds the variable or the variable enclosed by brackets so we can capture 'scale' 
+  # use. Have made as restrictive as possible so shouldn't ever find two variables, except in weird edge
+  # cases with nonstandard bracket use in variable names. 
+  tab <- tab[grepl(paste0('^', variable, '$'), tab$term)|grepl(paste0('\\(', variable, '\\)'), tab$term),]
   beta <- tab['estimate']
   p <- tab['p.value']
   t <- tab['statistic']
