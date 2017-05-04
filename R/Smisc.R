@@ -165,9 +165,9 @@ regression_apa <- function(model, variable) {
   p <- max(p, .001)
   
   if (p == .001) {
-    text = paste0('$\\beta$ = ', round(beta, 2), ', *t*(', df, ') = ', round(t, 2), ' *p* < .001.')
+    text = paste0('$\\beta$ = ', round(beta, 2), ', *t*(', df, ') = ', round(t, 2), ' *p* < .001')
   } else {
-    text = paste0('$\\beta$ = ', round(beta, 2), ', *t*(', df, ') = ', round(t, 2), ' *p* = ', p, '.')
+    text = paste0('$\\beta$ = ', round(beta, 2), ', *t*(', df, ') = ', round(t, 2), ' *p* = ', p)
   }
   
   text
