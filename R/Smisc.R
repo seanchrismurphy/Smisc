@@ -142,3 +142,33 @@ safe_load <- function(packages) {
   
   sapply(packages, require, character.only = TRUE)
 }
+
+
+
+
+### Taking inspiration from the APA package, this is a simpler function that uses the broom package to
+### print regression output easily in APA format. 
+
+regression_apa <- function(model, variable) {
+  require(broom)
+  # This lets us enter variable names without strings, but doens't work with spaces (not that we 
+  # should have any)
+  variable <- deparse(substitute(variable))
+  tab <- tidy(model, conf.int = TRUE)
+  tab <- tab[tab$term %in% variable,]
+  beta <- tab['estimate']
+  p <- tab['p.value']
+  t <- tab['statistic']
+  df <- glance(mod)['df.residual']
+  
+  p <- round(p, 3)
+  p <- max(p, .001)
+  
+  if (p == .001) {
+    text = paste0('$\\beta$ = ', round(beta, 2), ', *t*(', df, ') = ', round(t, 2), ' *p* < .001.')
+  } else {
+    text = paste0('$\\beta$ = ', round(beta, 2), ', *t*(', df, ') = ', round(t, 2), ' *p* = ', p, '.')
+  }
+  
+  text
+}
