@@ -180,6 +180,11 @@ regression_apa <- function(model, variable) {
   text
 }
 
+alpha_apa <- function(dataframe) {
+  require(psych)
+  text = paste0('$\\alpha$ = ', gsub('0\\.', '\\.',(sprintf("%.2f", psych::alpha(dataframe)$total$raw_alpha, 2))))
+  text
+}
 
 fit_many_regressions <- function(dependent, predictors, data) {
   models <- vector(mode = 'list', length = length(dependent))
@@ -196,4 +201,3 @@ fit_many_regressions <- function(dependent, predictors, data) {
   fitted <- sapply(models, function(x) do.call('lm', list(x, data = data)))
   fitted
 }
-
