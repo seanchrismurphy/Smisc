@@ -195,6 +195,14 @@ fit_many_regressions <- function(dependent, predictors, data) {
   for (i in 1:length(dependent)) {
     # Getting a bit clever with vectorized paste here, perhaps at risk of making this hard to read/change later. Just pasting scale around both
     # predictors before collapsing them. 
+    
+    # Get the predictor classes, and use a fairly hacky approach to set the function for factors to as.factor. 
+    # Not that it's needed but it matches the closing bracket and makes things a bit easier for me. 
+    
+    classes <- sapply(predictors, function(x) class(data[[x]]))
+    fun_list <- rep('scale(', length = length(classes))
+    fun_list[classes == 'factor'] <- 'as.factor('
+    # However by trying to scale everything we make it impossible to have factors as controls. 
     models[[i]] <- as.formula(paste0('scale(', dependent[i], ') ~ ', paste(paste0('scale(', predictors, ')'), collapse = ' + ')))
   }
   
