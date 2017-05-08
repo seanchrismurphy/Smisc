@@ -101,7 +101,7 @@ nice_fa <- function(data, nfactors, rotate = 'varimax', loadings.only = TRUE, cu
 
 
 # Leveraging the code that tells the alpha function in psych when things are likely reverse coded, to 
-# automagically reverse code entire scales. This returns the entire dataset so needs to be used assingment
+# automagically reverse code entire scales. This returns the entire dataset so needs to be used assignment
 # wise. 
 auto.reverse.code <- function(data, max = NULL, min = NULL) {
   if (is.null(max)) {
@@ -206,13 +206,17 @@ fit_many_regressions <- function(dependent, predictors, data) {
 # tests (regression or correlation, but it should work on anything that spits out a p value) is significant,
 # it adds nothing. But if it's not significant, it adds 'not '. Hopefully I can use this flexibly so that
 # my sentences will update correctly, at least at the rough level. 
-report_sig <- function(text) {
+flip_sig <- function(text, word = 'not') {
   require(stringr)
+  outstring_neg <- c('not ', 'did not predict')
+  outstring_pos <- c('', 'predicted')
+  names(outstring_neg) <- c('not', 'predicted')
+  names(outstring_pos) <- c('not', 'predicted')
   pval <- as.numeric(str_match(text, 'p.*(\\.[0-9]*)')[,2])
   if (pval < .05) {
-    out = ''
+    out = outstring_pos[word]
   } else {
-    out = 'not '
+    out = outstring_neg[word]
   }
   out
 }
