@@ -109,7 +109,7 @@ auto.reverse.code <- function(data, max = NULL, min = NULL) {
   }
   
   if (is.null(min)) {
-    max <- min(data, na.rm = TRUE)
+    min <- min(data, na.rm = TRUE)
   }
   
   require(psych)
