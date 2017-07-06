@@ -203,7 +203,7 @@ fit_many_regressions <- function(dependent, predictors, data) {
     fun_list <- rep('scale(', length = length(classes))
     fun_list[classes == 'factor'] <- 'as.factor('
     # However by trying to scale everything we make it impossible to have factors as controls. 
-    models[[i]] <- as.formula(paste0('scale(', dependent[i], ') ~ ', paste(paste0(fun_list, predictors, ')'), collapse = ' + ')))
+    models[[i]] <- as.formula(paste0('scale(', dependent[i], ') ~ ', paste(paste0(fun_list[i], predictors, ')'), collapse = ' + ')))
   }
   
   fitted <- sapply(models, function(x) do.call('lm', list(x, data = data)))
