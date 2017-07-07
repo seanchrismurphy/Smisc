@@ -240,10 +240,15 @@ cor_apa_slim <- function(x, y) {
 # (no random spaces between rows, removes a lot of the extra output like table notes and such for simplicities
 # sake for now). For best use, wrap the resulting table in a pander() call in a knitr chunk with results
 # = 'asis', and it should output in a fairly reasonable format to word. 
-apa_cor_table <- function(input) {
+apa_cor_table <- function(input, double.stars = FALSE) {
   require(apaTables); require(pander)
   panderOptions('table.alignment.rownames', 'left')
   mytab <- apa.cor.table(input, show.conf.interval = FALSE)
   mytab <- as.data.frame(mytab$table.body[seq(1, nrow(mytab$table.body), 2), 2:ncol(mytab$table.body)], row.names = mytab$table.body[seq(1, nrow(mytab$table.body), 2), 'Variable'])
+  # Replace the double significance stars with single stars for convenience
+  if (!double.stars) {
+    mytab[] <- sapply(mytab, function(x) gsub('\\*\\*', '*', x))
+  }
+  
   mytab
 }
