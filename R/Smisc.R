@@ -252,3 +252,29 @@ apa_cor_table <- function(input, double.stars = FALSE) {
   
   mytab
 }
+
+
+
+
+
+# A little convenience function to figure out what a number was divided by. I use it when I encounter
+# data that someone else has re-scaled and need to figure out the original scale. target = 0 means we're
+# looking for whole numbers, .5 means half numbers just in case. Can use with sapply over a vector of
+# names in a table to test a whole vector of divided numbers. 
+undivide <- function(n, target = 0) {
+  found = FALSE
+  while (!found & i < 100) {
+    # Deal with floating point problems. Round to five decimal places to stop tiny errors being a big deal.
+    placeholder = round(n*i, digits = 5)
+    found <- (((placeholder) %% 1) < (target + .01)) & (((placeholder) %% 1) > (target - .01))
+    i <- i + 1
+  }
+  
+  if (i < 100) {
+    print(paste0('Lowest whole number ',n,' might have been divided from is ', i-1))
+    print(paste0('The original number before division could be ', (i-1)*n))
+  } else {
+    print(paste0('Could not find a divisor for ', n))
+  }
+  
+}
