@@ -72,18 +72,22 @@ getdesc <- function(x) {
 # this seems to be the case in my experience, as it seemed to work in my dating profile examples. Thus,
 # the description argument (and the description function) are likely deprecated.
 
+# Updated this function to use the new readr version of read_csv. 
 qual.load <- function(x, label = TRUE) {
   require(Hmisc)
-  data <- read.csv(x, stringsAsFactors = FALSE, skip = 2, header = FALSE)
-  names <- read.csv(x, stringsAsFactors = FALSE, nrow = 2)
-  colnames(data) <- colnames(names)
-  names <- as.character(names[1,]); names(names) <- 1:length(names)
+  require(readr)
+  data <- read_csv(x, skip = 2, col_names = FALSE)
+  labs <- read_csv(x, n_max = 1)
+  colnames(data) <- colnames(labs)
+  labs <- as.character(labs[1,]); names(labs) <- 1:length(labs)
   if (label == TRUE) {
-    label(data) <- lapply(names, function(x) label(data[,names(x)]) = x)
+    label(data) <- lapply(labs, function(x) { label(data[, as.numeric(names(x))]) = x })
+    
   }
-  rm(names)
+  rm(labs)
   data
 }
+
 
 
 # Just a method to print the output from FA nicely without having to specify 20 settings, because it's a garbled
