@@ -119,7 +119,8 @@ auto.reverse.code <- function(data, max = NULL, min = NULL) {
   require(psych)
   p1 <- principal(data)
   if (any(p1$loadings < 0)) {
-    reversed <- p1$loadings < 0
+    # Converting to logical because tibbles dont like being subset by single dimension matrices. 
+    reversed <- as.logical(p1$loadings < 0)
     # This uses the empirical max of the entire scale, whereas I think the reverse.code function in psych
     # uses only the item by default, though there you can specify your max and min
     data[, reversed] <- (max + min - data[, reversed])
