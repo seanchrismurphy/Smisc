@@ -106,7 +106,7 @@ nice_fa <- function(data, nfactors, rotate = 'varimax', loadings.only = TRUE, cu
 
 # Leveraging the code that tells the alpha function in psych when things are likely reverse coded, to 
 # automagically reverse code entire scales. This returns the entire dataset so needs to be used assignment
-# wise. 
+# wise. Update
 auto.reverse.code <- function(data, max = NULL, min = NULL) {
   if (is.null(max)) {
     max <- max(data, na.rm = TRUE)
